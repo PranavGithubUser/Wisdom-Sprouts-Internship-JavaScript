@@ -41,12 +41,12 @@
 </head>
 
 <body>
- 
+
 
     <div id="getOTP" class="verification-container">
         <h4>OTP Verification</h4>
         <p class="mt-2">
-            <button class="btn btn-primary mt-3" onclick="generateCode()">Get OTP</button>
+            <button id="generateCode" class="btn btn-primary mt-3">Get OTP</button>
         </p>
         <p class="mt-2">Please enter the OTP that send to your mobile.</p>
         <p><strong><span id="generatedCode" class="text-primary"></span></strong></p>
@@ -58,7 +58,7 @@
             <input type="text" class="otp-input form-control" maxlength="1">
         </div>
 
-        <button class="btn btn-primary mt-3" onclick="verifyCode()">Submit</button>
+        <button id="verifyCode" class="btn btn-primary mt-3">Submit</button>
     </div>
 
     <div id="home" class="justify-content-center p-5 verification-container" style="visibility: hidden;">
@@ -77,21 +77,23 @@
             document.getElementById('statusMessage').textContent = '';
             clearInputs();
         }
+        document.querySelector("#generateCode").addEventListener("click",generateCode);
 
         function verifyCode() {
-            let userInput = '';
+            let userInput ='';
             document.querySelectorAll('.otp-input').forEach(input => {
                 userInput += input.value;
             });
 
-            if (userInput === generatedCode && userInput!==" ") {
+            if (userInput === generatedCode && userInput !=='') {
                 document.getElementById("getOTP").style.visibility = "hidden";
-                document.getElementById("home").style.visibility="visible";
+                document.getElementById("home").style.visibility = "visible";
             } else {
-                document.getElementById("home").style.visibility="hidden";
-             alert('❌ Incorrect Code. Try Again!');
+                document.getElementById("home").style.visibility = "hidden";
+                alert('❌ Incorrect Code. Try Again!');
             }
         }
+        document.querySelector("#verifyCode").addEventListener("click",verifyCode);
 
         function clearInputs() {
             document.querySelectorAll('.otp-input').forEach(input => {
