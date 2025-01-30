@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verification Code</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f8f9fa;
+        }
+
+        .verification-container {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        .otp-input {
+            width: 40px;
+            height: 50px;
+            font-size: 24px;
+            text-align: center;
+            margin: 5px;
+            border: 2px solid #ced4da;
+            border-radius: 5px;
+        }
+
+        .otp-input:focus {
+            border-color: #007bff;
+            outline: none;
+        }
+    </style>
+</head>
+
+<body>
+ 
+
+    <div id="getOTP" class="verification-container">
+        <h4>OTP Verification</h4>
+        <p class="mt-2">
+            <button class="btn btn-primary mt-3" onclick="generateCode()">Get OTP</button>
+        </p>
+        <p class="mt-2">Please enter the OTP that send to your mobile.</p>
+        <p><strong><span id="generatedCode" class="text-primary"></span></strong></p>
+
+        <div class="d-flex justify-content-center">
+            <input type="text" class="otp-input form-control" maxlength="1">
+            <input type="text" class="otp-input form-control" maxlength="1">
+            <input type="text" class="otp-input form-control" maxlength="1">
+            <input type="text" class="otp-input form-control" maxlength="1">
+        </div>
+
+        <button class="btn btn-primary mt-3" onclick="verifyCode()">Submit</button>
+    </div>
+
+    <div id="home" class="justify-content-center p-5 verification-container" style="visibility: hidden;">
+        <h1>Welcome to home page</h1><br>
+        <p>You have sucessfully verified your OTP.</p>
+    </div>
+
+
+
+    <script>
+        let generatedCode = '';
+
+        function generateCode() {
+            generatedCode = Math.floor(Math.random() * 9000 + 1000).toString();
+            document.getElementById('generatedCode').textContent = generatedCode;
+            document.getElementById('statusMessage').textContent = '';
+            clearInputs();
+        }
+
+        function verifyCode() {
+            let userInput = '';
+            document.querySelectorAll('.otp-input').forEach(input => {
+                userInput += input.value;
+            });
+
+            if (userInput === generatedCode && userInput!==" ") {
+                document.getElementById("getOTP").style.visibility = "hidden";
+                document.getElementById("home").style.visibility="visible";
+            } else {
+                document.getElementById("home").style.visibility="hidden";
+             alert('❌ Incorrect Code. Try Again!');
+            }
+        }
+
+        function clearInputs() {
+            document.querySelectorAll('.otp-input').forEach(input => {
+                input.value = '';
+            });
+            document.querySelectorAll('.otp-input')[0].focus();
+        }
+
+        document.querySelectorAll('.otp-input').forEach((input, index, inputs) => {
+            input.addEventListener('input', () => {
+                if (input.value.length === 1 && index < inputs.length - 1) {
+                    inputs[index + 1].focus();
+                }
+            });
+
+            input.addEventListener('keydown', (e) => {
+                if (e.key === "Backspace" && index > 0 && input.value === "") {
+                    inputs[index - 1].focus();
+                }
+            });
+        });
+    </script>
+
+</body>
+
+</html>
